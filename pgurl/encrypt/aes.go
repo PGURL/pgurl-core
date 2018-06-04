@@ -1,4 +1,4 @@
-package aes 
+package encrypt
 
 import (
     "bytes"
@@ -7,7 +7,6 @@ import (
     "crypto/rand"
     "encoding/base64"
     "errors"
-    "fmt"
     "io"
     "strings"
 )
@@ -42,7 +41,7 @@ func Unpad(src []byte) ([]byte, error) {
     return src[:(length - unpadding)], nil
 }
 
-func encrypt(key []byte, text string) (string, error) {
+func Encrypt(key []byte, text string) (string, error) {
     block, err := aes.NewCipher(key)
     if err != nil {
         return "", err
@@ -61,7 +60,7 @@ func encrypt(key []byte, text string) (string, error) {
     return finalMsg, nil
 }
 
-func decrypt(key []byte, text string) (string, error) {
+func Decrypt(key []byte, text string) (string, error) {
     block, err := aes.NewCipher(key)
     if err != nil {
         return "", err
