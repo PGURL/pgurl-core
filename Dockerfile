@@ -7,6 +7,6 @@ RUN go get -d .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app
  
 # final stage
-FROM centurylink/ca-certs
+FROM scratch
 COPY --from=build-env /src/app /
 ENTRYPOINT ["/app"]
