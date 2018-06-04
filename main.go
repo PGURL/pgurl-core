@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./src/db"
-	"./src/gen"
+	"./pgurl/db"
+	"./pgurl/gen"
         "net/http"
 	"github.com/gin-gonic/gin"
 )
