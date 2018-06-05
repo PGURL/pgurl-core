@@ -12,4 +12,10 @@ go test -v -cover ./...
 docker run --name some-redis -d redis
 ```
 
+## RUN k8s
 
+```
+kubectl create namespace pgurl
+kubectl -n pgurl apply -f k8s
+kubectl -n pgurl get service
+```
