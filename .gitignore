@@ -161,7 +161,7 @@ venv.bak/
 
 
 # govendor
-./vendor/*
+vendor/*
 
 
 # End of https://www.gitignore.io/api/go,git,linux,macos,python
