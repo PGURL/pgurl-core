@@ -10,12 +10,10 @@ RUN go get -u github.com/pilu/fresh
 
 # govendor
 
+## Download external package to vendor
+RUN govendor sync
 ## Add local package to vendor
 RUN govendor add +local
-RUN go get -d .
-
-## Add external package to vendor
-RUN govendor add +external
 RUN govendor list
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64
