@@ -5,16 +5,19 @@ import (
 	"regexp"
 )
 
-func isValidUrl(toTest string) bool {
-	_, err := url.ParseRequestURI(toTest)
-	if err != nil {
-		return false
-	} else {
-		match, _ := regexp.MatchString("(http|https)://", toTest)
-		if match {
-			return true
-		} else {
-			return false
-		}
+func isValidUrl(toTestUrl string) bool {
+        res := true
+        //  Use parse requests uri to check toTest string.
+	_, err := url.ParseRequestURI(toTestUrl)
+        if (err != nil){
+	    res = false
+        }
+
+        //  Check http or https include in toTest string.
+	match, _ := regexp.MatchString("(http|https)://", toTestUrl)
+	if !match {
+            res = false
 	}
+
+        return res
 }
