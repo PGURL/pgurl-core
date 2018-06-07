@@ -11,7 +11,7 @@ RUN go get -u github.com/pilu/fresh
 # govendor
 
 ## Download external package to vendor
-RUN govendor sync
+RUN govendor sync -v
 ## Add local package to vendor
 RUN govendor add +local
 RUN govendor list
