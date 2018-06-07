@@ -8,9 +8,3 @@ go:
 services:
   - redis-server
 
-install:
-- echo 'hello world'
-
-script:
-- go get -d .
-- go test -v -cover ./...
