@@ -10,7 +10,7 @@ func TestGenStr(t *testing.T) {
 		if len(gs) == gslen {
 			t.Logf("%s len is %d", gs, gslen)
 		} else {
-			t.Logf("%s len not %d", gs, gslen)
+			t.Error("len error")
 		}
 	}
 }
