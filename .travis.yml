@@ -1,0 +1,18 @@
+sudo: required
+
+language: go
+
+go:
+  - 1.9.6
+
+services:
+  - redis-server
+
+install:
+  - go get -u github.com/kardianos/govendor
+  - govendor sync -v
+  - govendor add +e
+  - govendor list
+
+script:
+  - go test -v -cover ./...
