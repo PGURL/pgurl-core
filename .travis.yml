@@ -9,7 +9,10 @@ services:
   - redis-server
 
 install:
-  - go get -t ./...
+  - go get -u github.com/kardianos/govendor
+  - govendor sync -v
+  - govendor add +e
+  - govendor list
 
 script:
-  - go test -v ./...
+  - go test -v -cover ./...

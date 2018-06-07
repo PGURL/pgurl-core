@@ -1,9 +1,9 @@
 package main
 
 import (
-	"pgurl-core/pgurl/db"
-	"pgurl-core/pgurl/encrypt"
-	"pgurl-core/pgurl/gen"
+	"github.com/PGURL/pgurl-core/pgurl/db"
+	"github.com/PGURL/pgurl-core/pgurl/encrypt"
+	"github.com/PGURL/pgurl-core/pgurl/gen"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
