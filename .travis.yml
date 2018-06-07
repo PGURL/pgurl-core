@@ -8,3 +8,8 @@ go:
 services:
   - redis-server
 
+install:
+  - go get -t ./...
+
+script:
+  - go test -v ./...
