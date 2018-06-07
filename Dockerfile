@@ -1,12 +1,11 @@
 # build stage
-FROM golang:alpine
+FROM golang:alpine AS build-env
 RUN apk add --update git
-ADD . /go/src/github/PGURL/pgurl-core
-WORKDIR /go/src/github/PGURL/pgurl-core
+ADD . /go/src/github.com/PGURL/pgurl-core
+WORKDIR /go/src/github.com/PGURL/pgurl-core
 
-# Get govendor & fresh
+# Get govendor
 RUN go get -u github.com/kardianos/govendor
-RUN go get -u github.com/pilu/fresh
 
 # govendor
 
@@ -16,9 +15,9 @@ RUN govendor sync -v
 RUN govendor add +e
 RUN govendor list
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-#  
-# # final stage
-# # FROM scratch
-# # COPY --from=build-env /src/app /
-ENTRYPOINT ["fresh"]
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app
+
+# final stage
+FROM scratch
+COPY --from=build-env /go/src/github.com/PGURL/pgurl-core/app /
+ENTRYPOINT ["/app"]
