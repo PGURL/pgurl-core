@@ -4,11 +4,16 @@ import (
 	"github.com/PGURL/pgurl-core/pgurl/db"
 	"github.com/PGURL/pgurl-core/pgurl/encrypt"
 	"github.com/PGURL/pgurl-core/pgurl/gen"
+	"github.com/PGURL/pgurl-core/pgurl/url"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 const key = "LKHlhb899Y09olUi"
+
+type URL struct {
+    URL     string `json:"url"`
+}
 
 func main() {
 	r := gin.Default()
@@ -19,18 +24,27 @@ func main() {
 		})
 	})
 	r.POST("/short", func(c *gin.Context) {
-		url := c.PostForm("url")
-		// value, store in db.
-		hash_url, _ := encrypt.Encrypt(aes_key, url)
+                var post_url URL
+                c.BindJSON(&post_url)
+		if url.IsValidUrl(post_url.URL) {
+			// value, store in db.
+			hash_url, _ := encrypt.Encrypt(aes_key, post_url.URL)
 
-		// key, return to user.
-		url_key := gen.GenRandomStr(6)
-		status := db.Create(url_key, hash_url)
+			// key, return to user.
+			url_key := gen.GenRandomStr(6)
+			status := db.Create(url_key, hash_url)
 
-		c.JSON(200, gin.H{
-			"status":   status,
-			"shorturl": url_key,
-		})
+			c.JSON(200, gin.H{
+				"status":   status,
+				"shorturl": url_key,
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"status":   "url error",
+				"shorturl": "",
+			})
+
+		}
 	})
 	r.GET("/q/:url_key", func(c *gin.Context) {
 		url_key := c.Param("url_key")
