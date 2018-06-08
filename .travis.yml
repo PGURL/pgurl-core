@@ -23,8 +23,8 @@ script:
   - docker run -d -p 8080:8080 jneo8/pgurl-core
   - docker ps -a
 
-before_deploy:
+deploy:
   # Login dockerhub
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   # push to dockerhub
-  - docker push jneo8/pgurl-core
+  - docker push pgurl/pgurl-core
