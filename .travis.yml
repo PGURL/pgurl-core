@@ -1,0 +1,34 @@
+sudo: required
+
+language: go
+
+go:
+  - 1.9.6
+
+services:
+  - redis-server
+  - docker
+
+jobs:
+  include:
+    - stage: test
+      install:
+        - go get -u github.com/kardianos/govendor
+        - govendor sync -v
+        - govendor add +e
+        - govendor list
+      script:
+        - go test -v -cover ./...
+    - stage: build
+      if: branch IN (master, dockerhub)
+      install:
+        # Overwrite install
+        - echo "Start build"
+      script:
+        - docker build -t pgurl/pgurl-core .
+        - docker images
+        - docker run -d -p 8080:8080 pgurl/pgurl-core
+        - docker ps -a
+      after_success:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push pgurl/pgurl-core
