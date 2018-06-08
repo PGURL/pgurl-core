@@ -8,11 +8,18 @@ go:
 services:
   - redis-server
 
-install:
-  - go get -u github.com/kardianos/govendor
-  - govendor sync -v
-  - govendor add +e
-  - govendor list
-
-script:
-  - go test -v -cover ./...
+jobs:
+  include:
+    - stage: test    
+      install:
+        - go get -u github.com/kardianos/govendor
+        - govendor sync -v
+        - govendor add +e
+        - govendor list
+      script:
+        - go test -v -cover ./...
+    - stage: build
+      if: branch = stage_build
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      
