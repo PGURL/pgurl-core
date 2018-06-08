@@ -13,8 +13,8 @@ type Configuration struct {
 var config *viper.Viper
 
 func init() {
-	environment := os.Getenv("ENVIRONMENT")
-	log.Printf("%v\n", environment)
+	environment := os.Getenv("ENV_MODE")
+	log.Printf("Load conf: %v\n", environment)
 
 	v := viper.New()
 	if (environment != "PRODUCTION") {
@@ -24,13 +24,14 @@ func init() {
 	}
 
 	v.SetConfigType("json")
+	v.AddConfigPath("../../confs/")
 	v.AddConfigPath("confs/")
 	err_readconfig := v.ReadInConfig()
 
-	if err_readconfig != nil {
-		log.Fatalf("No Config: \n%#v", v)
-	} else {
+	if err_readconfig == nil {
 		config = v
+	} else {
+		log.Fatalf("No Config: \n%#v \n%v", v, err_readconfig)
 	}
 }
 
