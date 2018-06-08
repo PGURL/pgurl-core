@@ -9,22 +9,21 @@ services:
   - redis-server
   - docker
 
-install:
-  - go get -u github.com/kardianos/govendor
-  - govendor sync -v
-  - govendor add +e
-  - govendor list
-
-script:
-  # runtest
-  - go test -v -cover ./...
-  # if test success, build image
-  - docker build -t jneo8/pgurl-core .
-  - docker run -d -p 8080:8080 jneo8/pgurl-core
-  - docker ps -a
-
-deploy:
-  # Login dockerhub
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  # push to dockerhub
-  - docker push pgurl/pgurl-core
+jobs:
+  include:
+    - stage: test    
+      install:
+        - go get -u github.com/kardianos/govendor
+        - govendor sync -v
+        - govendor add +e
+        - govendor list
+      script:
+        - go test -v -cover ./...
+    - stage: build
+      if: branch IN (master, dockerhub)
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t jneo8/pgurl-core .
+        - docker run -d -p 8080:8080 jneo8/pgurl-core
+        - docker ps -a
+        - docker push pgurl/pgurl-core
