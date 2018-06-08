@@ -1,0 +1,8 @@
+{
+    "redis": {
+        "port": "8080",
+        "host": "localhost",
+        "password": ""
+    },
+    "key": "EFG"
+}
