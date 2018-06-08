@@ -7,6 +7,7 @@ go:
 
 services:
   - redis-server
+  - docker
 
 jobs:
   include:
@@ -19,7 +20,10 @@ jobs:
       script:
         - go test -v -cover ./...
     - stage: build
-      if: branch = stage_build
+      if: branch IN (master, dockerhub)
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      
+        - docker build -t jneo8/pgurl-core .
+        - docker run -d -p 8080:8080 jneo8/pgurl-core
+        - docker ps -a
+        - docker push pgurl/pgurl-core
