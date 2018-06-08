@@ -1,8 +1,9 @@
 {
     "redis": {
-        "port": "8080",
+        "port": "6379",
         "host": "localhost",
-        "password": ""
+        "password": "",
+        "db": 0
     },
     "key": "ABC"
 }
