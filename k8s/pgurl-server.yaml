@@ -11,7 +11,10 @@ spec:
     spec:
       containers:
         - name: pgurl-core
-          image: herber523/pgurl-core
+          image: pgurl/pgurl-core:k8s_beta
+          env:
+          - name: ENV_MODE
+            value: "PRODUCTION"
           ports:
             - containerPort: 8080
 

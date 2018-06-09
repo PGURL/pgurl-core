@@ -20,14 +20,14 @@ jobs:
       script:
         - go test -v -cover ./...
     - stage: build
-      if: branch IN (master, dockerhub)
+      if: branch IN (master, dockerhub, k8s_beta)
       install:
         # Overwrite install
         - echo "Start build"
       script:
         - docker build -t pgurl/pgurl-core .
         - docker images
-        - docker run -d -p 8080:8080 pgurl/pgurl-core
+        - docker run -d -p -e ENV_MODE=PRODUCTION 8080:8080 pgurl/pgurl-core
         - docker ps -a
       after_success:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin

@@ -24,6 +24,7 @@ func init() {
 	}
 
 	v.SetConfigType("json")
+	v.AddConfigPath("/")
 	v.AddConfigPath("../../confs/")
 	v.AddConfigPath("confs/")
 	err_readconfig := v.ReadInConfig()
