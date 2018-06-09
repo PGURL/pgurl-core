@@ -31,4 +31,4 @@ jobs:
         - docker ps -a
       after_success:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker push pgurl/pgurl-core
+        - docker push pgurl/pgurl-core:k8s_beta
