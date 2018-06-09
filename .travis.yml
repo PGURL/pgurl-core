@@ -27,7 +27,7 @@ jobs:
       script:
         - docker build -t pgurl/pgurl-core .
         - docker images
-        - docker run -d -p -e ENV_MODE=PRODUCTION 8080:8080 pgurl/pgurl-core
+        - docker run -d -e ENV_MODE=PRODUCTION -p 8080:8080 pgurl/pgurl-core
         - docker ps -a
       after_success:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
