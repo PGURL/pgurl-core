@@ -11,7 +11,7 @@ DOCKERBUILD=$(DOCKERCMD) build
 DOCKERRUN=$(DOCKERCMD) run
 DOCKERPUSH=$(DOCKERCMD) push
 DOCKER_IMAGE=pgurl/pgurl-core
-DOCKER_TAG=k8s_bate
+DOCKER_TAG=k8s_beta
 
 all: test build
 build: 
