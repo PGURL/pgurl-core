@@ -12,13 +12,15 @@ DOCKERRUN=$(DOCKERCMD) run
 DOCKERPUSH=$(DOCKERCMD) push
 DOCKER_IMAGE=pgurl/pgurl-core
 DOCKER_TAG=k8s_beta
+PRODUCTION_ENV_MODE=PRODUCTION
+DEV_ENV_MODE=DEV
 
 all: test build
-build: 
+build:
 	$(GOBUILD) -o $(BINARY_NAME) -v
-test: 
+test:
 	$(GOTEST) -v -cover ./...
-clean: 
+clean:
 	$(GOCLEAN)
 	rm -f $(BINARY_NAME)
 run:
@@ -29,9 +31,10 @@ deps:
 	govendor sync -v
 	govendor add +e
 	govendor list
+	export ENV_MODE=$(DEV_ENV_MODE)
 docker_build:
-	$(DOCKERBUILD) -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+	$(DOCKERBUILD) -t $(DOCKER_IMAGE):$(DOCKER_TAG) --build-arg ENV_MODE=$(PRODUCTION_ENV_MODE) .
 docker_run:
-	$(DOCKERRUN) -d -e ENV_MODE=PRODUCTION -p 8080:8080 $(DOCKER_IMAGE):$(DOCKER_TAG)
+	$(DOCKERRUN) -d -e ENV_MODE=$(DEV_ENV_MODE) -p 8080:8080 $(DOCKER_IMAGE):$(DOCKER_TAG)
 docker_push:
 	$(DOCKERPUSH) $(DOCKER_IMAGE):$(DOCKER_TAG)
