@@ -13,22 +13,19 @@ jobs:
   include:
     - stage: test
       install:
-        - go get -u github.com/kardianos/govendor
-        - govendor sync -v
-        - govendor add +e
-        - govendor list
+        - make deps
       script:
-        - go test -v -cover ./...
+        - make test
     - stage: build
       if: branch IN (master, dockerhub, k8s_beta)
       install:
         # Overwrite install
         - echo "Start build"
       script:
-        - docker build -t pgurl/pgurl-core .
+        - make docker_build
         - docker images
-        - docker run -d -e ENV_MODE=PRODUCTION -p 8080:8080 pgurl/pgurl-core
+        - make docker_run
         - docker ps -a
       after_success:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker push pgurl/pgurl-core:k8s_beta
+        - make docker_push
