@@ -14,23 +14,25 @@ var config *viper.Viper
 
 func init() {
 	environment := os.Getenv("ENV_MODE")
-	log.Printf("Load conf: %v\n", environment)
+	log.Printf("ENV_MODE: %v\n", environment)
 
 	v := viper.New()
 	if (environment != "PRODUCTION") {
-		v.SetConfigName("development")
+		environment = "development"
 	} else {
-		v.SetConfigName("production")
+		environment = "production"
 	}
+	v.SetConfigName(environment)
 
 	v.SetConfigType("json")
-	v.AddConfigPath("/")
+	v.AddConfigPath("/confs")
 	v.AddConfigPath("../../confs/")
 	v.AddConfigPath("confs/")
 	err_readconfig := v.ReadInConfig()
 
 	if err_readconfig == nil {
 		config = v
+		log.Printf("Now use conf %v", environment)
 	} else {
 		log.Fatalf("No Config: \n%#v \n%v", v, err_readconfig)
 	}
