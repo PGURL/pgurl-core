@@ -5,7 +5,7 @@ import (
 	"regexp"
 )
 
-func isValidUrl(toTestUrl string) bool {
+func IsValidUrl(toTestUrl string) bool {
         res := true
         //  Use parse requests uri to check toTest string.
 	_, err := url.ParseRequestURI(toTestUrl)
