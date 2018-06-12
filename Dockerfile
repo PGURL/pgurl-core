@@ -20,4 +20,10 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app
 # final stage
 FROM scratch
 COPY --from=build-env /go/src/github.com/PGURL/pgurl-core/app /
+COPY --from=build-env /go/src/github.com/PGURL/pgurl-core/confs/ /confs
+
+# Start Set ENV
+ARG ENV_MODE=development
+ENV ENV_MODE=$ENV_MODE
+# END Set ENV
 ENTRYPOINT ["/app"]

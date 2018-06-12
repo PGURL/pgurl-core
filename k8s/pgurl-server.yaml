@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pgurl-core
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pgurl-core
+    spec:
+      containers:
+        - name: pgurl-core
+          image: pgurl/pgurl-core:k8s_beta
+          env:
+          - name: ENV_MODE
+            value: "PRODUCTION"
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgurl-core-service
+  labels:
+    name: pgurl-core-service
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: pgurl-core
+  type: NodePort
+
+

@@ -1,14 +1,19 @@
 package db
 
-import "github.com/go-redis/redis"
+import (
+	"fmt"
+	"github.com/go-redis/redis"
+	"github.com/PGURL/pgurl-core/pgurl/config"
+)
 
 var redis_client *redis.Client = RedisCon()
 
 func  RedisCon () *redis.Client{
+	config := config.GetConfig()
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Addr:     fmt.Sprintf("%v:%v", config.GetString("redis.host"), config.GetString("redis.port")),
+		Password: config.GetString("redis.password"),
+		DB:       config.GetInt("redis.db"),  // use default DB
 	})
     return client
 }
