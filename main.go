@@ -5,6 +5,7 @@ import (
 	"github.com/PGURL/pgurl-core/pgurl/encrypt"
 	"github.com/PGURL/pgurl-core/pgurl/gen"
 	"github.com/PGURL/pgurl-core/pgurl/url"
+	"github.com/PGURL/pgurl-core/pgurl/base"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -18,11 +19,7 @@ type URL struct {
 func main() {
 	r := gin.Default()
 	aes_key := []byte(key)
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	r.GET("/ping", base.Ping)
 	r.POST("/short", func(c *gin.Context) {
                 var post_url URL
                 c.BindJSON(&post_url)
