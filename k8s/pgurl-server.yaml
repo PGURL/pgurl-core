@@ -29,6 +29,7 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
+      nodePort: 31050
       protocol: TCP
   selector:
     app: pgurl-core
