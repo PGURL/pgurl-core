@@ -11,24 +11,24 @@ services:
 
 jobs:
   include:
-      # - stage: test
-      # - install:
-      # -   - make deps
-      # - script:
-      # -   - make test
-      # - stage: build
-      # - if: branch IN (master, dockerhub, k8s_beta)
-      # - install:
-      # -   # Overwrite install
-      # -   - echo "Start build"
-      # - script:
-      # -   - make docker_build
-      # -   - docker images
-      # -   - make docker_run
-      # -   - docker ps -a
-      # - after_success:
-      # -   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      # -   - make docker_push
+    - stage: test
+      install:
+        - make deps
+      script:
+        - make test
+    - stage: build
+      if: branch IN (master, dockerhub, k8s_beta)
+      install:
+        # Overwrite install
+        - echo "Start build"
+      script:
+        - make docker_build
+        - docker images
+        - make docker_run
+        - docker ps -a
+      after_success:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - make docker_push
     - stage: deploy
       if: branch IN(master, auto_deploy)
       install:
