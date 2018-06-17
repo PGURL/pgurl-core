@@ -42,9 +42,7 @@ jobs:
         - source /home/travis/google-cloud-sdk/path.bash.inc
         - gcloud version
         - gcloud components install kubectl -q
-        - echo "$GCLOUD_SERVICE" | sed 's/ //g' |base64 -d > gcloud-service-key.json
-        - ls gcloud-service-key.json
-        - cat gcloud-service-key.json
+        - echo "$GCLOUD_SERVICE" | sed 's/ //g' | base64 -d > gcloud-service-key.json
         - gcloud auth activate-service-account --key-file gcloud-service-key.json
         - gcloud container clusters get-credentials pgurl --zone asia-east1-a --project pgurl-206302
         - kubectl get nodes
