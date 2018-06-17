@@ -39,11 +39,10 @@ jobs:
       script:
         - gcloud version || true
         - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
-        # Add gcloud to $PATH
-        - gcloud components install kubectl
         - source /home/travis/google-cloud-sdk/path.bash.inc
         - gcloud version
-        - echo $GCLOUD_SERVICE | sed 's/ //g' |base64 -d > ~/gcloud-service-key.json
-        - gcloud auth activate-service-account --key-file ~/gcloud-service-key.json
+        - gcloud components install kubectl
+        - echo $GCLOUD_SERVICE | sed 's/ //g' |base64 -d > gcloud-service-key.json
+        - gcloud auth activate-service-account --key-file gcloud-service-key.json
         - gcloud container clusters get-credentials pgurl --zone asia-east1-a --project pgurl-206302
         - kubectl get nodes
