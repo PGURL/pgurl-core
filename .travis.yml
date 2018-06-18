@@ -46,3 +46,4 @@ jobs:
         - gcloud auth activate-service-account --key-file gcloud-service-key.json
         - gcloud container clusters get-credentials pgurl --zone asia-east1-a --project pgurl-206302
         - kubectl get nodes
+        - kubectl apply -f k8s
