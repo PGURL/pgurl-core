@@ -1,13 +1,13 @@
 package encrypt
 
 import (
-    "testing"
+	"testing"
 )
 
 func TestAES(t *testing.T) {
-        // write some test
-        key := []byte("LKHlhb899Y09olUi")
-        encryptMsg, _ := Encrypt(key, "PGURL is GOOD !!!!!")
-        msg, _ := Decrypt(key, encryptMsg)
-        t.Logf("%s -> %s", msg, encryptMsg) // Hello World
+	// write some test
+	key := []byte("LKHlhb899Y09olUi")
+	encryptMsg, _ := Encrypt(key, "PGURL is GOOD !!!!!")
+	msg, _ := Decrypt(key, encryptMsg)
+	t.Logf("%s -> %s", msg, encryptMsg) // Hello World
 }

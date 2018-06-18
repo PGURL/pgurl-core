@@ -12,7 +12,7 @@ import (
 const key = "LKHlhb899Y09olUi"
 
 type URL struct {
-    URL     string `json:"url"`
+	URL string `json:"url"`
 }
 
 func main() {
@@ -24,8 +24,8 @@ func main() {
 		})
 	})
 	r.POST("/short", func(c *gin.Context) {
-                var post_url URL
-                c.BindJSON(&post_url)
+		var post_url URL
+		c.BindJSON(&post_url)
 		if url.IsValidUrl(post_url.URL) {
 			// value, store in db.
 			hash_url, _ := encrypt.Encrypt(aes_key, post_url.URL)
