@@ -1,21 +1,22 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/PGURL/pgurl-core/pgurl/db"
 	"github.com/PGURL/pgurl-core/pgurl/encrypt"
 	"github.com/PGURL/pgurl-core/pgurl/gen"
 	"github.com/PGURL/pgurl-core/pgurl/url"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 const key = "LKHlhb899Y09olUi"
 
 type URL struct {
-    URL     string `json:"url"`
+	URL string `json:"url"`
 }
 
-func main() {
+func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	aes_key := []byte(key)
 	r.GET("/ping", func(c *gin.Context) {
@@ -24,8 +25,8 @@ func main() {
 		})
 	})
 	r.POST("/short", func(c *gin.Context) {
-                var post_url URL
-                c.BindJSON(&post_url)
+		var post_url URL
+		c.BindJSON(&post_url)
 		if url.IsValidUrl(post_url.URL) {
 			// value, store in db.
 			hash_url, _ := encrypt.Encrypt(aes_key, post_url.URL)
@@ -54,5 +55,10 @@ func main() {
 			c.Redirect(http.StatusMovedPermanently, url)
 		}
 	})
+	return r
+}
+
+func main() {
+	r := SetupRouter()
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

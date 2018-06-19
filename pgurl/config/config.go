@@ -1,9 +1,9 @@
 package config
 
 import (
-	"os"
-	"log"
 	"github.com/spf13/viper"
+	"log"
+	"os"
 )
 
 type Configuration struct {
@@ -17,7 +17,7 @@ func init() {
 	log.Printf("ENV_MODE: %v\n", environment)
 
 	v := viper.New()
-	if (environment != "PRODUCTION") {
+	if environment != "PRODUCTION" {
 		environment = "development"
 	} else {
 		environment = "production"
@@ -41,4 +41,3 @@ func init() {
 func GetConfig() *viper.Viper {
 	return config
 }
-

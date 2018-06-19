@@ -4,41 +4,56 @@ import (
 	"testing"
 )
 
-func TestValidUrl(t *testing.T) {
-
-	testurl := "http://www.google.com"
-	if IsValidUrl(testurl) {
-		t.Logf("%s is valid url", testurl)
-	} else {
-		t.Error("$s -> isValidUrl error", testurl)
+func TestIsValidUrl(t *testing.T) {
+	type args struct {
+		toTestUrl string
 	}
-
-	testurl = "https://www.google.com"
-	if IsValidUrl(testurl) {
-		t.Logf("%s is valid url", testurl)
-	} else {
-		t.Error("$s -> isValidUrl error", testurl)
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "True url https://www.google.com",
+			args: args{
+				toTestUrl: "https://www.google.com",
+			},
+			want: true,
+		},
+		{
+			name: "True url http://www.google.com",
+			args: args{
+				toTestUrl: "http://www.google.com",
+			},
+			want: true,
+		},
+		{
+			name: "False url htt://www.google.com",
+			args: args{
+				toTestUrl: "htt://www.google.com",
+			},
+			want: false,
+		},
+		{
+			name: "False url http:/www.google.com",
+			args: args{
+				toTestUrl: "http:/www.google.com",
+			},
+			want: false,
+		},
+		{
+			name: "Empty url",
+			args: args{
+				toTestUrl: "",
+			},
+			want: false,
+		},
 	}
-
-	testurl = "http:/www.google.com"
-	if !IsValidUrl(testurl) {
-		t.Logf("%s is not valid url", testurl)
-	} else {
-		t.Error("$s -> isValidUrl error", testurl)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsValidUrl(tt.args.toTestUrl); got != tt.want {
+				t.Errorf("IsValidUrl() = %v, want %v", got, tt.want)
+			}
+		})
 	}
-
-	testurl = "htt//www.google.com"
-	if !IsValidUrl(testurl) {
-		t.Logf("%s is not valid url", testurl)
-	} else {
-		t.Error("$s -> isValidUrl error", testurl)
-	}
-
-	testurl = ""
-	if !IsValidUrl(testurl) {
-		t.Logf("%s is not valid url", testurl)
-	} else {
-		t.Error("$s -> isValidUrl error", testurl)
-	}
-
 }
