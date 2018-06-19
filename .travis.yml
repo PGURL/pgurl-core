@@ -29,3 +29,21 @@ jobs:
       after_success:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - make docker_push
+    - stage: deploy
+      if: branch IN(master, auto_deploy)
+      install:
+        - echo "Start deploy"
+      cache:
+        directories:
+          - "$HOME/google-cloud-sdk/"
+      script:
+        - gcloud version || true
+        - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+        - source /home/travis/google-cloud-sdk/path.bash.inc
+        - gcloud version
+        - gcloud components install kubectl -q
+        - echo "$GCLOUD_SERVICE" | sed 's/ //g' | base64 -d > gcloud-service-key.json
+        - gcloud auth activate-service-account --key-file gcloud-service-key.json
+        - gcloud container clusters get-credentials pgurl --zone asia-east1-a --project pgurl-206302
+        - kubectl get nodes
+        - kubectl apply -f k8s
