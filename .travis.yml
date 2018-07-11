@@ -13,6 +13,9 @@ jobs:
   include:
     - stage: test
       install:
+        - docker run --name scylla -v $(pwd)/db.cql:/db/db.cql -p 9042:9042 -d scylladb/scylla
+        - sleep 20
+        - docker exec -it scylla cqlsh -f /db/db.cql
         - make deps
       script:
         - make test
